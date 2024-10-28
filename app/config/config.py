@@ -1,4 +1,4 @@
-# Add this directory file .env with datas below
+# Add directory file .env with datas below
 
 from dotenv import load_dotenv
 import os

@@ -1,0 +1,40 @@
+{% extends 'users/base.html' %}
+
+{% block user_info %}
+    <h5 class="card-title">Информация о пользователе</h5>
+    <p><strong>Имя:</strong> Иван</p>
+    <p><strong>Фамилия:</strong> Иванов</p>
+    <p><strong>Email:</strong> ivan.ivanov@example.com</p>
+    <p><strong>Телефон:</strong> +7 (123) 456-78-90</p>
+    <p><strong>Зарегистрирован:</strong> 2023-10-20</p>
+{% endblock user_info %}
+
+{% block projects %}
+    <h5 class="card-title">Мои Проекты</h5>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="/project/1/">Проект 1</a>
+        </li>
+        <li class="list-group-item">
+            <a href="/project/2/">Проект 2</a>
+        </li>
+        <li class="list-group-item">
+            <a href="/project/3/">Проект 3</a>
+        </li>
+    </ul>
+{% endblock projects %}
+
+{% block active %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Добавить Новый Проект</h5>
+            <form method="POST" action="/add_project/">
+                <div class="form-group">
+                    <label for="projectName">Название проекта</label>
+                    <input type="text" class="form-control" id="projectName" name="project_name" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Добавить проект</button>
+            </form>
+        </div>
+    </div>
+{% endblock active %}

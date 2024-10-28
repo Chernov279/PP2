@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-from app.config.config import SECRET_KEY, DB_PORT, DB_HOST, DB_PASSWORD, DB_USER, DB_NAME, DB_ENGINE
+from config.config import SECRET_KEY, DB_PORT, DB_HOST, DB_PASSWORD, DB_USER, DB_NAME, DB_ENGINE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'users',
 ]
 
 MIDDLEWARE = [
