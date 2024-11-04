@@ -17,6 +17,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(email, password, **extra_fields)
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=255)
@@ -34,3 +35,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    class Meta:
+        db_table: str = "user"
+        verbose_name: str = "Пользователь"
+        verbose_name_plural: str = "Пользователи"
