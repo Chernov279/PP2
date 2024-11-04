@@ -5,10 +5,17 @@ from users.models import CustomUser
 
 class Project(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name="Название")
+    slug = models.SlugField(max_length=255)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='project_creator'
+    )
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table: str = "project"
@@ -48,6 +55,7 @@ class ProjectUser(models.Model):
     id = models.BigAutoField(primary_key=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='project_users')
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='user_projects')
+    status = models.CharField(max_length=15, default="member")
 
     class Meta:
         unique_together = ('project', 'user')
