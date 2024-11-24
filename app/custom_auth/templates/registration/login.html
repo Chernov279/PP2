@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Войти в аккаунт</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <!-- Поле для ввода имени пользователя -->
+                        <div class="form-group">
+                            <label for="username">Имя пользователя</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+
+                        <!-- Поле для ввода пароля -->
+                        <div class="form-group">
+                            <label for="password">Пароль</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+
+                        <!-- Сообщения об ошибках (если есть) -->
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                Неверное имя пользователя или пароль.
+                            </div>
+                        {% endif %}
+
+                        <!-- Кнопка отправки формы -->
+                        <button type="submit" class="btn btn-primary">Войти</button>
+                    </form>
+                </div>
+                <div class="card-footer text-muted">
+<!--                    <a href="{% url 'password_reset' %}">Забыли пароль?</a> |-->
+                    <a href="{% url 'signup' %}">Зарегистрироваться</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

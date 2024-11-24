@@ -25,6 +25,7 @@ urlpatterns = [
     path('users/', include("users.urls")),
     path('project/', include("projects.urls")),
     path('', include("home.urls")),
+    path('', include("custom_auth.urls")),
 ]
 
 if DEBUG:

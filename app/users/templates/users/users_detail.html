@@ -2,11 +2,11 @@
 
 {% block user_info %}
     <h5 class="card-title">Информация о пользователе</h5>
-    <p><strong>Имя:</strong> Иван</p>
-    <p><strong>Фамилия:</strong> Иванов</p>
-    <p><strong>Email:</strong> ivan.ivanov@example.com</p>
-    <p><strong>Телефон:</strong> +7 (123) 456-78-90</p>
-    <p><strong>Зарегистрирован:</strong> 2023-10-20</p>
+    <p><strong>Имя:</strong> {{ user_detail.name }}</p>
+    <p><strong>Фамилия:</strong> {{ user_detail.name }}</p>
+    <p><strong>Email:</strong> {{ user_detail.name }}</p>
+    <p><strong>Телефон:</strong> +{{ user_detail.name }}</p>
+    <p><strong>Зарегистрирован:</strong> {{ user_detail.name }}</p>
 {% endblock user_info %}
 
 {% block projects %}

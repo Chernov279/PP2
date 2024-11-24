@@ -67,9 +67,15 @@
                 <a href="{% url 'about_us' %}" class="text-white mx-2">Почему мы?</a>
             </nav>
             <div class="d-flex align-items-center">
-                <a href="{% url 'user_detail' %}" class="text-white">
-                    <i class="fas fa-user-circle profile-icon"></i>
-                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'user_detail' %}">
+                        <img src="{{ user.profile_picture.url }}" alt="Profile Picture">
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}">
+                        <img src="path_to_profile_icon" alt="Profile Icon">
+                    </a>
+                {% endif %}
             </div>
         </div>
     </header>
@@ -80,7 +86,12 @@
             <h1 class="display-3">Создавайте проекты с нами!</h1>
             <p class="lead">Присоединяйтесь к нам и начните работать над своими проектами уже сегодня!</p>
             <div class="d-flex justify-content-center">
-                <a href="{% url 'project_create' %}" class="btn cta-btn btn-lg">Создать новый проект</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'project_create' %}" class="btn cta-btn btn-lg">Создать новый проект</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn cta-btn btn-lg">Зарегистрируйтесь, чтобы создавать свои проекты!</a>
+                {% endif %}
+
                 <a href="{% url 'project_list' %}" class="btn btn-outline-primary btn-lg ms-3">Посмотреть на проекты</a>
             </div>
         </div>

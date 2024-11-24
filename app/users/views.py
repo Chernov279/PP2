@@ -8,7 +8,7 @@ from .models import CustomUser
 class UserMeView(LoginRequiredMixin, DetailView):
     # Просмотр своего пользователя GET
     model = CustomUser
-    template_name = "users/users_me.html"
+    template_name = "users/users_detail.html"
     context_object_name = "user_detail"
 
     def get_object(self):
@@ -36,7 +36,6 @@ class OtherUserDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "user_profile"
 
     def get_queryset(self):
-        # Исключаем информацию о дате регистрации
         return CustomUser.objects.defer("registration_date")
 
 

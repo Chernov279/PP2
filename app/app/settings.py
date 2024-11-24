@@ -33,8 +33,8 @@ INTERNAL_IPS = [
 ]
 
 INSTALLED_APPS = [
+    "django.contrib.auth",
     'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     'projects',
     'home',
+    'custom_auth',
 ]
 
 MIDDLEWARE = [
@@ -97,6 +98,12 @@ DATABASES = {
 AUTH_USER_MODEL = 'users.CustomUser'
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+
+LOGIN_REDIRECT_URL = '/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
