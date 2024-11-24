@@ -5,12 +5,12 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Create/Edit Project</h1>
+<h1>Are you sure you want to delete {{ object.name }}?</h1>
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
+    <button type="submit">Yes, delete</button>
 </form>
+<a href="{% url 'project_list' %}">Cancel</a>
 
 </body>
 </html>
