@@ -1,0 +1,47 @@
+{% extends 'users/base.html' %}
+
+{% block user_info %}
+    <h5 class="card-title">Изменить информацию о пользователе</h5>
+
+    <form method="POST" action="{% url 'user_update' user.pk %}">
+    {% csrf_token %}
+
+    <strong>Имя пользователя:</strong>
+    <div class="form-group">
+        {{ form.username }}
+        {% if form.username.errors %}
+            <div class="error">{{ form.username.errors }}</div>
+        {% endif %}
+    </div>
+
+    <strong>Email:</strong>
+    <div class="form-group">
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class="error">{{ form.email.errors }}</div>
+        {% endif %}
+    </div>
+
+    <strong>Имя:</strong>
+    <div class="form-group">
+        {{ form.first_name }}
+        {% if form.first_name.errors %}
+            <div class="error">{{ form.first_name.errors }}</div>
+        {% endif %}
+    </div>
+
+    <strong>Фамилия:</strong>
+    <div class="form-group">
+        {{ form.last_name }}
+        {% if form.last_name.errors %}
+            <div class="error">{{ form.last_name.errors }}</div>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+</form>
+
+
+    <br>
+    <a href="{% url 'user_detail' user.pk %}" class="btn btn-secondary">Отмена</a>
+{% endblock user_info %}

@@ -1,19 +1,13 @@
 from django.contrib.auth.views import LoginView
+from django.views.generic import FormView
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
-from django.contrib.auth.forms import UserCreationForm
-
+from django.contrib.auth import login
 from users.forms import CustomUserCreationForm
 
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
 
-
-from django.views.generic import FormView
-from django.urls import reverse_lazy
-from django.contrib.auth import login
-from users.forms import CustomUserCreationForm
 
 class SignupView(FormView):
     template_name = 'registration/signup.html'
@@ -27,6 +21,6 @@ class SignupView(FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        print(form)
         # Если форма невалидна, то возвращаем страницу с ошибками
         return self.render_to_response(self.get_context_data(form=form))
+

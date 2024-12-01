@@ -2,26 +2,67 @@
 
 {% block user_info %}
     <h5 class="card-title">Информация о пользователе</h5>
-    <p><strong>Имя:</strong> {{ user_detail.name }}</p>
-    <p><strong>Фамилия:</strong> {{ user_detail.name }}</p>
-    <p><strong>Email:</strong> {{ user_detail.name }}</p>
-    <p><strong>Телефон:</strong> +{{ user_detail.name }}</p>
-    <p><strong>Зарегистрирован:</strong> {{ user_detail.name }}</p>
+
+    <p>
+        <strong>Имя пользователя:</strong>
+        {% if user_detail.username %}
+            {{ user_detail.username }}
+        {% else %}
+            <span style="color: red;">admin?</span>
+        {% endif %}
+    </p>
+    <p>
+        <strong>Имя:</strong>
+        {% if user_detail.first_name %}
+            {{ user_detail.first_name }}
+        {% else %}
+            <span style="color: red;">Вы еще не добавили свое имя.</span>
+        {% endif %}
+    </p>
+    <p>
+        <strong>Фамилия:</strong>
+        {% if user_detail.last_name %}
+            {{ user_detail.last_name }}
+        {% else %}
+            <span style="color: red;">Вы еще не добавили свою фамилию.</span>
+        {% endif %}
+    </p>
+    <p>
+        <strong>Email:</strong>
+        {% if user_detail.email %}
+            {{ user_detail.email }}
+        {% else %}
+            <span style="color: red;">Вы еще не добавили свой email.</span>
+        {% endif %}
+    </p>
+    <p>
+        <strong>Телефон:</strong>
+        {% if user_detail.phone %}
+            +{{ user_detail.phone }}
+        {% else %}
+            <span style="color: red;">Вы еще не добавили свой телефон.</span>
+        {% endif %}
+    </p>
+    <p>
+        <strong>Зарегистрирован:</strong> {{ user_detail.created_at|date:"d M Y" }}
+    </p>
+    <a href="{% url 'user_update' user.pk %}" class="btn btn-secondary mt-2">Изменить данные</a>
 {% endblock user_info %}
 
 {% block projects %}
     <h5 class="card-title">Мои Проекты</h5>
     <ul class="list-group">
-        <li class="list-group-item">
-            <a href="/project/1/">Проект 1</a>
-        </li>
-        <li class="list-group-item">
-            <a href="/project/2/">Проект 2</a>
-        </li>
-        <li class="list-group-item">
-            <a href="/project/3/">Проект 3</a>
-        </li>
+        {% for project in projects|slice:":3" %}
+            <li class="list-group-item">
+                <a href="/project/{{ project.id }}/">{{ project.name }}</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-danger">У вас пока нет проектов.</li>
+        {% endfor %}
     </ul>
+    {% if projects|length > 3 %}
+        <a href="/projects/" class="btn btn-primary mt-3">Посмотреть все проекты</a>
+    {% endif %}
 {% endblock projects %}
 
 {% block active %}
@@ -29,6 +70,7 @@
         <div class="card-body">
             <h5 class="card-title">Добавить Новый Проект</h5>
             <form method="POST" action="/add_project/">
+                {% csrf_token %}
                 <div class="form-group">
                     <label for="projectName">Название проекта</label>
                     <input type="text" class="form-control" id="projectName" name="project_name" required>
@@ -37,4 +79,12 @@
             </form>
         </div>
     </div>
+<div class="mt-4">
+    <form action="{% url 'logout' %}" method="POST" class="btn btn-danger">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-sign-out-alt"></i> Выйти из аккаунта
+        </button>
+    </form>
+</div>
 {% endblock active %}
