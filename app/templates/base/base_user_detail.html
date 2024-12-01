@@ -1,0 +1,23 @@
+{% extends 'base/base_navigation_table.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mt-5">{{ user_profile }}</h1>
+
+        <div class="card">
+            <div class="card-body">
+                {% block user_info %}
+                {% endblock user_info %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                {% block projects %}
+                {% endblock projects %}
+            </div>
+        </div>
+        {% block active %}
+        {% endblock active %}
+    </div>
+{% endblock %}

@@ -13,7 +13,7 @@ from .models import CustomUser
 class UserDetailView(LoginRequiredMixin, DetailView):
     # Просмотр своего пользователя GET
     model = CustomUser
-    template_name = "users/users_detail.html"
+    template_name = "users/user_detail.html"
     context_object_name = "user_detail"
 
     def get_object(self):
@@ -58,50 +58,19 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.save()
-        print(form.cleaned_data)
         return redirect(self.success_url)
-
-
-# class UserUpdateView(LoginRequiredMixin, UpdateView):
-#     model = CustomUser
-#     template_name = "users/user_update.html"
-#     fields = ['username', 'email', 'first_name', 'last_name']  # Поля для редактирования
-#     success_url = reverse_lazy('user_detail')  # Убедитесь, что success_url верен
-#
-#     def get_object(self):
-#         user = super().get_object()
-#
-#         # Проверяем, что текущий пользователь - владелец
-#         if user != self.request.user:
-#             raise Http404("Вы не можете редактировать чужой профиль.")
-#         return user
-
-
-# class UpdateProfileView(UpdateView):
-#     def get(self, request, pk):
-#         user = get_object_or_404(CustomUser, pk=pk)
-#         form = UserUpdateForm(instance=user)
-#         return render(request, 'users/user_update.html', {'form': form, 'user': user})
-#
-#     def post(self, request, pk):
-#         user = get_object_or_404(CustomUser, pk=pk)
-#         form = UserUpdateForm(request.POST, instance=user)
-#         if form.is_valid():
-#             print(form.cleaned_data)  # Выводим очищенные данные для отладки
-#             form.save()
-#             return redirect('user_detail', pk=user.pk)
-#         return render(request, 'users/users_detail.html', {'form': form, 'user': user})
 
 
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = CustomUser
     template_name = "users/user_confirm_delete.html"
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy('home')  # Перенаправляем на страницу входа после удаления
 
-    def get_object(self):
-        return self.request.user
-
-
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj != self.request.user:
+            raise Http404("Вы не можете удалить чужой профиль.")
+        return obj
 
 
 

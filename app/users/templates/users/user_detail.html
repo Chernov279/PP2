@@ -1,4 +1,4 @@
-{% extends 'users/base.html' %}
+{% extends 'base/base_user_detail.html' %}
 
 {% block user_info %}
     <h5 class="card-title">Информация о пользователе</h5>
@@ -36,14 +36,6 @@
         {% endif %}
     </p>
     <p>
-        <strong>Телефон:</strong>
-        {% if user_detail.phone %}
-            +{{ user_detail.phone }}
-        {% else %}
-            <span style="color: red;">Вы еще не добавили свой телефон.</span>
-        {% endif %}
-    </p>
-    <p>
         <strong>Зарегистрирован:</strong> {{ user_detail.created_at|date:"d M Y" }}
     </p>
     <a href="{% url 'user_update' user.pk %}" class="btn btn-secondary mt-2">Изменить данные</a>
@@ -66,25 +58,33 @@
 {% endblock projects %}
 
 {% block active %}
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Добавить Новый Проект</h5>
-            <form method="POST" action="/add_project/">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="projectName">Название проекта</label>
-                    <input type="text" class="form-control" id="projectName" name="project_name" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Добавить проект</button>
-            </form>
-        </div>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Добавить Новый Проект</h5>
+        <form method="POST" action="/add_project/">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="projectName">Название проекта</label>
+                <input type="text" class="form-control" id="projectName" name="project_name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить проект</button>
+        </form>
     </div>
-<div class="mt-4">
-    <form action="{% url 'logout' %}" method="POST" class="btn btn-danger">
+</div>
+
+<!-- Кнопки "Выйти из аккаунта" и "Удалить аккаунт" -->
+<div class="d-flex justify-content-between mt-4">
+    <form action="{% url 'logout' %}" method="POST">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">
+        <button type="submit" class="btn btn-outline-danger btn-lg">
             <i class="fas fa-sign-out-alt"></i> Выйти из аккаунта
         </button>
     </form>
+    <a href="{% url 'user_delete' user.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-lg">
+            Удалить аккаунт
+        </button>
+    </a>
 </div>
 {% endblock active %}
