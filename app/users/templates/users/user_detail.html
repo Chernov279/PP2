@@ -50,7 +50,7 @@
     <ul class="list-group">
         {% for project in projects|slice:":3" %}
             <li class="list-group-item">
-                <a href="/project/{{ project.id }}/">{{ project.name }}</a>
+                <a href="/project/{{ project.slug }}/">{{ project.name }}</a>
             </li>
         {% empty %}
             <li class="list-group-item text-danger">У вас пока нет проектов.</li>

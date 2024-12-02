@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 
 from .forms import UserUpdateForm
 from .models import CustomUser
+from projects.views import MyProjectListView
+from projects.models import Project
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -19,6 +21,11 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     def get_object(self):
         # Возвращаем текущего пользователя
         return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['projects'] = Project.objects.filter(created_by=self.request.user)
+        return context
 
 
 class UserCreateView(CreateView):

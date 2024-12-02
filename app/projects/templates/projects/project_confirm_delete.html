@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>Are you sure you want to delete {{ object.name }}?</h1>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Yes, delete</button>
-</form>
-<a href="{% url 'project_list' %}">Cancel</a>
+{% extends 'base/base_confirm_delete.html' %}
 
-</body>
-</html>
+{% block content %}
+<section class="container mt-5">
+    <h2>Удалить проект</h2>
+    <p>Вы уверены, что хотите удалить проект <strong>{{ project.name }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a href="{% url 'project_detail' project.slug %}" class="btn btn-secondary">Отмена</a>
+    </form>
+</section>
+{% endblock %}

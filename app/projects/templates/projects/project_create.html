@@ -1,0 +1,13 @@
+{% extends 'base/base_navigation_table.html' %}
+
+{% block content %}
+<section class="container mt-5">
+    <h2>Создать проект</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Создать</button>
+        <a href="{% url 'project_detail' project.slug %}" class="btn btn-secondary">Отмена</a>
+    </form>
+</section>
+{% endblock %}

@@ -2,7 +2,7 @@
 
 {% block projects_name %}
 <h1 class="mb-4">
-Проекты
+Мои проекты
 </h1>
 {% endblock projects_name %}
 
@@ -22,7 +22,7 @@
 
 {% block no_projects %}
 <div class="text-center">
-    <p class="text-danger mb-4">Пока нет ни одного проекта.</p>
+    <p class="text-danger mb-4">У вас пока нет проектов.</p>
     <a href="{% url 'project_create' %}" class="btn btn-success btn-lg">Создать первый проект</a>
 </div>
 {% endblock no_projects %}
