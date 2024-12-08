@@ -1,5 +1,9 @@
 {% extends 'base/base_navigation_table.html' %}
 
+{% block title %}
+Просмотр проекта
+{% endblock title %}
+
 {% block content %}
 <section class="container mt-5">
     <h2>Детали проекта</h2>
@@ -17,5 +21,7 @@
         </div>
     </div>
     <a href="{% url 'project_list_my' %}" class="btn btn-secondary mt-3">Назад к списку проектов</a>
+    <!-- Кнопка детального просмотра -->
+    <a href="{% url 'project_detail_main' project.id %}" class="btn btn-info mt-3">Детальный просмотр</a>
 </section>
 {% endblock %}

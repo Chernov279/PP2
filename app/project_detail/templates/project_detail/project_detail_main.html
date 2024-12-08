@@ -1,0 +1,165 @@
+{% extends 'base_project_main/base_sidebars.html' %}
+
+{% block title %}
+Проект
+{% endblock title %}
+
+{% block head_style_content %}
+/* Стили для доски */
+.board {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 15px;
+    flex-wrap: wrap;  /* Чтобы колонки переходили на новую строку на маленьких экранах */
+    align-items: flex-start; /* Колонки остаются сверху */
+}
+
+/* Стили для колонок */
+.column {
+    flex: 1;
+    min-width: 220px; /* Минимальная ширина колонок */
+    max-width: 25%;  /* Максимальная ширина для колонок */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #ffffff 0%, rgba(211, 211, 211, 0.5) 100%);
+    border: 1px solid rgba(200, 200, 200, 0.6);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Названия колонок с полупрозрачным фоном */
+.column-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: rgba(150, 150, 150, 0.5);
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Цвета колонок */
+.todo { background-color: rgba(200, 200, 200, 0.5); }
+.in-progress { background-color: rgba(173, 216, 230, 0.5); }
+.review { background-color: rgba(255, 236, 179, 0.5); color: #333; }
+.done { background-color: rgba(144, 238, 144, 0.5); }
+
+/* Стили для задач */
+.task {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    width: 90%;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Кнопка добавления задачи */
+.add-task-btn {
+    background-color: #a5d6a7; /* Светло-зелёный */
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    position: fixed; /* Зафиксирована вне колонок */
+    bottom: 20px; /* Расположена снизу */
+    right: 20px; /* Справа */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+
+.add-task-btn:hover {
+    background-color: #81c784; /* Более насыщенный при наведении */
+}
+
+.add-task-btn::after {
+    content: "Добавить таск";
+    position: absolute;
+    top: -35px; /* Текст над кнопкой */
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.add-task-btn:hover::after {
+    opacity: 1;
+}
+
+/* Кнопка добавления колонки */
+.add-column {
+    background-color: #5dade2;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.add-column:hover {
+    background-color: #4a90d9;
+}
+
+/* Для мобильных устройств, чтобы сделать доску более компактной */
+@media (max-width: 768px) {
+    .board {
+        flex-direction: column;
+    }
+
+    .column {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}
+{% endblock head_style_content %}
+
+{% block content %}
+<div class="board">
+    <div class="column todo">
+        <div class="column-header">В задумке</div>
+        <div class="task">Название задачи 1</div>
+        <div class="task">Название задачи 2</div>
+    </div>
+
+    <div class="column in-progress">
+        <div class="column-header">В процессе разработки</div>
+        <div class="task">Название задачи 3</div>
+    </div>
+
+    <div class="column review">
+        <div class="column-header">Дорабатывается</div>
+        <div class="task">Название задачи 4</div>
+    </div>
+
+    <div class="column done">
+        <div class="column-header">Готово</div>
+        <div class="task">Название задачи 5</div>
+    </div>
+
+    <!-- Кнопка для добавления задачи -->
+    <button class="add-task-btn">+</button>
+</div>
+
+<!-- Кнопка добавления колонки -->
+<button class="add-column">+ Добавить колонку</button>
+{% endblock content %}

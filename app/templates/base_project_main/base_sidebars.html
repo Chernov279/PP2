@@ -1,0 +1,164 @@
+{% extends 'base_project_main/base_project_detail.html' %}
+
+{% block head_style_sidebars %}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    background-color: rgba(211, 211, 211, 0.9);
+    color: #333;
+    padding: 20px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+/* Когда панель активна, она появляется */
+.sidebar.active {
+    transform: translateX(0);
+}
+
+/* Кнопки для показа/скрытия боковых панелей */
+.sidebar-icon {
+    position: fixed;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Иконка для левой панели (участников) */
+.sidebar-icon.left {
+    left: 0;
+    top: 45%;  /* Ближе к середине */
+    border-radius: 5px 0 0 5px;
+}
+
+/* Иконка для правой панели (таск-лога) */
+.sidebar-icon.right {
+    left: 0;
+    bottom: 40%;  /* Немного ниже первой иконки */
+    border-radius: 5px 0 0 5px;
+}
+
+/* Кнопки внутри боковых панелей */
+.sidebar-button {
+    background-color: #5dade2;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.sidebar-button:hover {
+    background-color: #4a90d9;
+}
+
+/* Появление текста при наведении */
+.sidebar-icon span {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 100%;
+    margin-left: 10px;
+    font-size: 14px;
+    background-color: #d3d3d3;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.sidebar-icon:hover span {
+    display: block;
+}
+
+/* Адаптивный дизайн для мобильных устройств */
+@media (max-width: 768px) {
+    .board {
+        flex-direction: column;
+    }
+
+    .column {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}
+{% endblock head_style_sidebars %}
+
+{% block members_sidebar %}
+<!-- Боковая панель для участников -->
+<div class="sidebar" id="members_sidebar">
+    <h3>Описание проекта</h3>
+    <p>Краткое описание проекта...</p>
+    <h3>Участники</h3>
+    <ul>
+        <li>Участник 1</li>
+        <li>Участник 2</li>
+    </ul>
+    <button class="sidebar-button" aria-label="Добавить участника">Добавить участника</button>
+</div>
+
+<!-- Иконка для показа/скрытия боковой панели участников -->
+<div class="sidebar-icon left" onclick="toggleSidebar('members_sidebar')">
+    <i class="fas fa-users"></i>
+    <span>Показать участников</span>
+</div>
+{% endblock members_sidebar %}
+
+{% block tasklog_sidebar %}
+<!-- Боковая панель для таск-лога -->
+<div class="sidebar right" id="tasklog_sidebar">
+    <h3>Таск-лог</h3>
+    <ul>
+        <li>Добавлена задача 1</li>
+        <li>Изменён статус задачи 2</li>
+    </ul>
+    <button class="sidebar-button" aria-label="Добавить лог">Добавить лог</button>
+</div>
+
+<!-- Иконка для показа/скрытия боковой панели таск-лога -->
+<div class="sidebar-icon right" onclick="toggleSidebar('tasklog_sidebar')">
+    <i class="fas fa-list"></i>
+    <span>Показать таск-лог</span>
+</div>
+{% endblock tasklog_sidebar %}
+
+{% block script_for_sidebars %}
+<script>
+    // Функция для скрытия/показа боковых панелей
+    function toggleSidebar(id) {
+        const sidebar = document.getElementById(id);
+        const allSidebars = document.querySelectorAll('.sidebar');
+
+        // Закрыть все боковые панели, если одна из них открыта
+        allSidebars.forEach(function(side) {
+            if (side.id !== id) {
+                side.classList.remove('active');
+            }
+        });
+
+        // Переключить активный класс на текущей панели
+        sidebar.classList.toggle('active');
+
+        // Обновляем текст и иконки в зависимости от состояния
+        const span = sidebar.querySelector('span');
+        const icon = sidebar.querySelector('.sidebar-icon i');
+
+        if (sidebar.classList.contains('active')) {
+            span.textContent = "Скрыть";
+            icon.classList.replace(id === 'leftSidebar' ? 'fa-users' : 'fa-list', 'fa-times');
+        } else {
+            span.textContent = id === 'leftSidebar' ? "Показать участников" : "Показать таск-лог";
+            icon.classList.replace('fa-times', id === 'leftSidebar' ? 'fa-users' : 'fa-list');
+        }
+    }
+</script>
+{% endblock script_for_sidebars %}

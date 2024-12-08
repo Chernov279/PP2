@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         {% block title %}
-        Канбан Доска
+        Проект
         {% endblock title %}
     </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -14,7 +14,9 @@
     {% block bootstraps %}
     {% endblock bootstraps %}
 
+
     <style>
+
         .navbar {
             background-color: #f8f9fa;
         }
@@ -33,7 +35,13 @@
             font-size: 20px;
             color: #007bff;
         }
+        {% block head_style_sidebars %}
+        {% endblock head_style_sidebars %}
+
+        {% block head_style_content %}
+        {% endblock head_style_content %}
     </style>
+
 </head>
 <body>
     <!-- Навигационная панель -->
@@ -71,6 +79,12 @@
         </div>
     </nav>
 
+{% block members_sidebar %}
+{% endblock members_sidebar %}
+
+{% block tasklog_sidebar %}
+{% endblock tasklog_sidebar %}
+
     <!-- Основное содержимое страницы -->
     <div class="container mt-4">
 
@@ -107,5 +121,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% block script_for_sidebars %}
+    {% endblock script_for_sidebars %}
 </body>
 </html>
