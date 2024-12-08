@@ -42,7 +42,7 @@
     <p>
         <strong>Зарегистрирован:</strong> {{ user_detail.created_at|date:"d M Y" }}
     </p>
-    <a href="{% url 'user_update' user.pk %}" class="btn btn-secondary mt-2">Изменить данные</a>
+    <a href="{% url 'user_update' user.slug %}" class="btn btn-secondary mt-2">Изменить данные</a>
 {% endblock user_info %}
 
 {% block projects %}
@@ -50,7 +50,7 @@
     <ul class="list-group">
         {% for project in projects|slice:":3" %}
             <li class="list-group-item">
-                <a href="/project/{{ project.slug }}/">{{ project.name }}</a>
+                <a href="{% url 'project_detail' project.id %}">{{ project.name }}</a>
             </li>
         {% empty %}
             <li class="list-group-item text-danger">У вас пока нет проектов.</li>

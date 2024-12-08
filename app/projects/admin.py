@@ -11,7 +11,7 @@ from projects.models import Project, Column, Task, TaskLog, ProjectUser
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("name", )}
+    pass
 
 
 # @admin.register(ProjectUser)

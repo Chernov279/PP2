@@ -52,7 +52,7 @@
                     <a class="nav-link" href="{% url 'project_list_my' %}"><i class="fas fa-tasks"></i> Мои проекты</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user_detail' user.pk %}"><i class="fas fa-user-circle profile-icon"></i> Профиль</a>
+                    <a class="nav-link" href="{% url 'user_detail' user.slug %}"><i class="fas fa-user-circle profile-icon"></i> Профиль</a>
                 </li>
 
                  {% else %}

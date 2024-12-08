@@ -6,7 +6,6 @@ from users.models import CustomUser
 class Project(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, verbose_name="Название")
-    slug = models.SlugField(max_length=255)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated_at = models.DateTimeField(auto_now=True)

@@ -3,7 +3,7 @@
 {% block user_info %}
     <h5 class="card-title">Изменить информацию о пользователе</h5>
 
-    <form method="POST" action="{% url 'user_update' user.pk %}">
+    <form method="POST" action="{% url 'user_update' user.slug %}">
     {% csrf_token %}
 
     <strong>Имя пользователя:</strong>
@@ -43,5 +43,5 @@
 
 
     <br>
-    <a href="{% url 'user_detail' user.pk %}" class="btn btn-secondary">Отмена</a>
+    <a href="{% url 'user_detail' user.slug %}" class="btn btn-secondary">Отмена</a>
 {% endblock user_info %}

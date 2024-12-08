@@ -3,10 +3,10 @@
 {% block user_info %}
     <h5 class="card-title">Удаление аккаунта</h5>
 
-    <form method="POST" action="{% url 'user_delete' user.pk %}">
+    <form method="POST" action="{% url 'user_delete' user.slug %}">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Да, я уверен</button>
-        <a href="{% url 'user_detail' user.pk %}" class="btn btn-secondary">Отмена</a>
+        <a href="{% url 'user_detail' user.slug %}" class="btn btn-secondary">Отмена</a>
     </form>
 {% endblock user_info %}}
 
