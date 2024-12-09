@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.utils.text import slugify
 
 
 class CustomUserManager(BaseUserManager):
@@ -36,6 +37,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.username)  # Генерируем slug из имени пользователя
+        super().save(*args, **kwargs)
+
 
     class Meta:
         db_table: str = "user"

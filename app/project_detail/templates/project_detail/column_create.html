@@ -1,0 +1,135 @@
+{% extends 'base_project_main/base_sidebars.html' %}
+
+{% block title %}
+Создание новой колонки
+{% endblock title %}
+
+{% block head_style_content %}
+    .create-column-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: rgba(211, 211, 211, 0.5);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(200, 200, 200, 0.6);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        font-size: 16px;
+    }
+
+    .tasks-container {
+        margin-top: 20px;
+    }
+
+    .task-item {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .task-item input {
+        flex: 1;
+    }
+
+    .add-task-btn {
+        background-color: #58d68d;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .add-task-btn:hover {
+        background-color: #48c878;
+    }
+
+    .submit-btn {
+        width: 100%;
+        background-color: #5dade2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 15px;
+        cursor: pointer;
+        font-size: 18px;
+        margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+        background-color: #4a90d9;
+    }
+{% endblock head_style_content %}
+
+{% block content %}
+<div class="create-column-container">
+    <h1>Создание новой колонки</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Название колонки</label>
+            <input type="text" id="name" name="name" placeholder="Введите название колонки" required>
+        </div>
+
+        <div class="form-group">
+            <label for="color">Выберите цвет колонки</label>
+            <select id="color" name="color">
+                <option value="#8e8e8e">Серый</option>
+                <option value="#5dade2">Синий</option>
+                <option value="#f7dc6f">Желтый</option>
+                <option value="#58d68d">Зеленый</option>
+                <option value="#e74c3c">Красный</option>
+                <option value="#9b59b6">Фиолетовый</option>
+            </select>
+        </div>
+
+        <div class="tasks-container">
+            <h3>Добавить задачи</h3>
+            <div class="task-item">
+                <input type="text" name="tasks[]" placeholder="Название задачи">
+                <button type="button" class="add-task-btn" onclick="addTaskField()">+</button>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Создать колонку</button>
+    </form>
+</div>
+
+<script>
+    function addTaskField() {
+        const tasksContainer = document.querySelector('.tasks-container');
+        const taskItem = document.createElement('div');
+        taskItem.classList.add('task-item');
+        taskItem.innerHTML = `
+            <input type="text" name="tasks[]" placeholder="Название задачи">
+            <button type="button" class="add-task-btn" onclick="removeTaskField(this)">-</button>
+        `;
+        tasksContainer.appendChild(taskItem);
+    }
+
+    function removeTaskField(button) {
+        const taskItem = button.parentElement;
+        taskItem.remove();
+    }
+</script>
+{% endblock content %}

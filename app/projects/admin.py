@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from projects.models import Project, Column, Task, TaskLog, ProjectUser
+from .models import Project
+
 
 # admin.site.register(Project)
 # admin.site.register(Column)

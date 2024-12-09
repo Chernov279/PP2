@@ -1,0 +1,232 @@
+{% extends 'base_project_main/base_sidebars.html' %}
+
+{% block title %}
+Создание новой колонки
+{% endblock title %}
+
+{% block head_style_content %}    .edit-column-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: rgba(211, 211, 211, 0.5);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(200, 200, 200, 0.6);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        font-size: 16px;
+    }
+
+    .tasks-container {
+        margin-top: 20px;
+    }
+
+    .task-item {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .task-item input {
+        flex: 1;
+    }
+
+    .add-task-btn,
+    .delete-task-btn,
+    .delete-column-btn {
+        background-color: #58d68d;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .add-task-btn:hover,
+    .delete-task-btn:hover,
+    .delete-column-btn:hover {
+        background-color: #48c878;
+    }
+
+    .submit-btn {
+        width: 100%;
+        background-color: #5dade2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 15px;
+        cursor: pointer;
+        font-size: 18px;
+        margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+        background-color: #4a90d9;
+    }
+{% endblock head_style_content %}
+
+{% block content %}
+<div class="edit-column-container" data-project-id="{{ project.id }}">
+    <h1>Редактирование колонки</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <!-- Название колонки -->
+        <div class="form-group">
+            <label for="name">Название колонки</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                value="{{ column.name }}"
+                placeholder="Введите название колонки"
+                required>
+        </div>
+
+        <!-- Цвет колонки -->
+        <div class="form-group">
+            <label for="color">Выберите цвет колонки</label>
+            <select id="color" name="color">
+                <option value="#8e8e8e" {% if column.color == "#8e8e8e" %}selected{% endif %}>Серый</option>
+                <option value="#5dade2" {% if column.color == "#5dade2" %}selected{% endif %}>Синий</option>
+                <option value="#f7dc6f" {% if column.color == "#f7dc6f" %}selected{% endif %}>Желтый</option>
+                <option value="#58d68d" {% if column.color == "#58d68d" %}selected{% endif %}>Зеленый</option>
+                <option value="#e74c3c" {% if column.color == "#e74c3c" %}selected{% endif %}>Красный</option>
+                <option value="#9b59b6" {% if column.color == "#9b59b6" %}selected{% endif %}>Фиолетовый</option>
+            </select>
+        </div>
+
+        <!-- Список задач -->
+        <div class="tasks-container">
+            <h3>Редактировать задачи</h3>
+            {% for task in column.tasks.all %}
+            <div class="task-item">
+                <input
+                    type="text"
+                    name="tasks[{{ task.id }}]"
+                    value="{{ task.title }}"
+                    placeholder="Название задачи">
+                <button
+                    type="button"
+                    class="delete-task-btn"
+                    onclick="removeTaskField(this, '{{ task.id }}')">Удалить</button>
+            </div>
+            {% endfor %}
+
+            <!-- Добавление новой задачи -->
+            <div class="task-item">
+                <input type="text" name="tasks[new][]" placeholder="Добавить новую задачу">
+                <button type="button" class="add-task-btn" onclick="addTaskField()">+</button>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Сохранить изменения</button>
+    </form>
+    <button type="button" class="delete-column-btn" onclick="confirmDeleteColumn()">Удалить колонку</button>
+</div>
+
+<script>
+function removeTaskField(button, taskId = null) {
+    const taskItem = button.parentElement;
+    const projectId = taskItem.closest('.edit-column-container').dataset.projectId; // Получаем projectId из ближайшего контейнера
+    if (taskId) {
+        // Убедитесь, что projectId передан
+        if (!projectId) {
+            console.error("Project ID не найден!");
+            return;
+        }
+
+        // Отправка запроса на удаление задачи
+        fetch(`/projects/${projectId}/task/remove/${taskId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')  // CSRF токен
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Не удалось удалить задачу');
+            }
+            taskItem.remove();  // Удаляем задачу из DOM
+        })
+        .catch(error => {
+            console.error('Ошибка при удалении задачи:', error);
+        });
+    } else {
+        // Просто удаляем задачу из DOM, если это новая задача
+        taskItem.remove();
+    }
+}
+
+function addTaskField() {
+    const tasksContainer = document.querySelector('.tasks-container');
+    const taskItem = document.createElement('div');
+    taskItem.classList.add('task-item');
+    taskItem.innerHTML = `
+        <input type="text" name="tasks[new][]" placeholder="Добавить новую задачу">
+        <button type="button" class="delete-task-btn" onclick="removeTaskField(this)">-</button>
+    `;
+    tasksContainer.appendChild(taskItem);
+}
+
+// Функция для получения CSRF токена из cookies
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+    function confirmDeleteColumn() {
+    const projectId = document.querySelector('.edit-column-container').dataset.projectId;
+    const columnId = {{ column.id }}; // Получаем ID колонки из контекста шаблона
+
+    const confirmation = confirm("Вы уверены, что хотите удалить эту колонку? Все задачи внутри колонки также будут удалены.");
+    if (confirmation) {
+        // Отправляем запрос на удаление колонки
+        fetch(`/projects/${projectId}/column/remove/${columnId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Если удаление прошло успешно, можно перенаправить пользователя
+                window.location.href = `/projects/${projectId}/detail/`;  // Перенаправление на страницу проекта
+            } else {
+                alert("Не удалось удалить колонку.");
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при удалении колонки:', error);
+        });
+    }
+}
+</script>
+{% endblock content %}

@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Project
+from project_detail.models import Column
 
 
 class ProjectListView(ListView):
@@ -29,14 +30,30 @@ class ProjectDetailView(DetailView):
 
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
-    # Создание проектов POST
     model = Project
     fields = ["name", "description"]
     template_name = "projects/project_create.html"
     success_url = reverse_lazy("project_list_my")  # Перенаправление после создания
 
     def form_valid(self, form):
-        form.instance.created_by = self.request.user  # Устанавливаем текущего пользователя
+        form.instance.created_by = self.request.user
+
+        project = form.save()
+
+        column_data = [
+            {"name": "В задумке", "color": "#FF0000", "position": 0},
+            {"name": "В процессе разработки", "color": "#0000FF", "position": 1},
+            {"name": "Разработано", "color": "#00FF00", "position": 2},
+            {"name": "Внедрено", "color": "#FFFF00", "position": 3},
+        ]
+        for column in column_data:
+            Column.objects.create(
+                project=project,
+                name=column["name"],
+                color=column["color"],
+                position=column["position"]
+            )
+
         return super().form_valid(form)
 
 
