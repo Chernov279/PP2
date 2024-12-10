@@ -19,7 +19,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "user_detail"
 
     def get_object(self):
-        # Возвращаем текущего пользователя
         return self.request.user
 
     def get_context_data(self, **kwargs):
@@ -31,11 +30,10 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 class UserCreateView(CreateView):
     model = CustomUser
     template_name = "users/user_form.html"
-    fields = ['username', 'email', 'password']  # Поля для регистрации
-    success_url = reverse_lazy("login")  # Перенаправление после регистрации
+    fields = ['username', 'email', 'password']
+    success_url = reverse_lazy("login")
 
     def form_valid(self, form):
-        # Шифрование пароля перед сохранением
         user = form.save(commit=False)
         user.set_password(form.cleaned_data["password"])
         user.save()
@@ -71,7 +69,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = CustomUser
     template_name = "users/user_confirm_delete.html"
-    success_url = reverse_lazy('home')  # Перенаправляем на страницу входа после удаления
+    success_url = reverse_lazy('home')
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)

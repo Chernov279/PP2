@@ -1,9 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Project
 from project_detail.models import Column
+
+from project_detail.models import ProjectUser
 
 
 class ProjectListView(ListView):
@@ -33,13 +36,12 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     fields = ["name", "description"]
     template_name = "projects/project_create.html"
-    success_url = reverse_lazy("project_list_my")  # Перенаправление после создания
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
 
         project = form.save()
-
+        print("Проект создан. ID:", project.pk)
         column_data = [
             {"name": "В задумке", "color": "#FF0000", "position": 0},
             {"name": "В процессе разработки", "color": "#0000FF", "position": 1},
@@ -53,7 +55,13 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
                 color=column["color"],
                 position=column["position"]
             )
-
+        ProjectUser.objects.create(
+            project=project,
+            user=self.request.user,
+            status="creator"  # Статус создателя проекта
+        )
+        self.success_url = reverse('project_detail_main', kwargs={'pk': project.pk})
+        print("Перенаправление на:", self.success_url)
         return super().form_valid(form)
 
 

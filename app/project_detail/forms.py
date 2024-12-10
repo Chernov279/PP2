@@ -1,5 +1,7 @@
 from django import forms
 from .models import Project, Column, Task, TaskLog
+from users.models import CustomUser
+
 
 class ProjectForm(forms.ModelForm):
     class Meta:
@@ -52,3 +54,13 @@ class TaskLogForm(forms.ModelForm):
         widgets = {
             'message': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Сообщение лога'}),
         }
+
+
+class AddProjectUserForm(forms.Form):
+    user = forms.ModelChoiceField(
+        queryset=CustomUser.objects.all(),
+        to_field_name="id",  # Чтобы использовать id для сохранения
+        empty_label="Выберите пользователя",
+        label="Пользователь",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )

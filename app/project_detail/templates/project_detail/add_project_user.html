@@ -1,0 +1,11 @@
+{% extends "base/base_navigation_table.html" %}
+
+{% block content %}
+<h2>Добавить участника в проект</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Добавить</button>
+</form>
+<a href="{% url 'project_detail_main' project.id %}">Вернуться к проекту</a>
+{% endblock content %}

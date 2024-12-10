@@ -1,109 +1,193 @@
 {% extends 'base_project_main/base_project_detail.html' %}
 
 {% block head_style_sidebars %}
-
-.sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    width: 250px;
-    background-color: rgba(211, 211, 211, 0.9);
-    color: #333;
-    padding: 20px;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    z-index: 1000;
-    overflow-y: auto;
-}
-
-/* Когда панель активна, она появляется */
-.sidebar.active {
-    transform: translateX(0);
-}
-
-/* Кнопки для показа/скрытия боковых панелей */
-.sidebar-icon {
-    position: fixed;
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 1001;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-/* Иконка для левой панели (участников) */
-.sidebar-icon.left {
-    left: 0;
-    top: 45%;  /* Ближе к середине */
-    border-radius: 5px 0 0 5px;
-}
-
-/* Иконка для правой панели (таск-лога) */
-.sidebar-icon.right {
-    left: 0;
-    bottom: 40%;  /* Немного ниже первой иконки */
-    border-radius: 5px 0 0 5px;
-}
-
-/* Кнопки внутри боковых панелей */
-.sidebar-button {
-    background-color: #5dade2;
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
-}
-
-.sidebar-button:hover {
-    background-color: #4a90d9;
-}
-
-/* Появление текста при наведении */
-.sidebar-icon span {
-    display: none;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 100%;
-    margin-left: 10px;
-    font-size: 14px;
-    background-color: #d3d3d3;
-    padding: 5px;
-    border-radius: 3px;
-}
-
-.sidebar-icon:hover span {
-    display: block;
-}
-
-/* Адаптивный дизайн для мобильных устройств */
-@media (max-width: 768px) {
-    .board {
-        flex-direction: column;
+    .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 250px;
+        background-color: rgba(211, 211, 211, 0.9);
+        color: #333;
+        padding: 20px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        overflow-y: auto;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     }
 
-    .column {
-        width: 100%;
+    /* Когда панель активна, она появляется */
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    /* Кнопки для показа/скрытия боковых панелей */
+    .sidebar-icon {
+        position: fixed;
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 1001;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Иконка для левой панели (участников) */
+    .sidebar-icon.left {
+        left: 0;
+        top: 45%;
+        border-radius: 5px 0 0 5px;
+    }
+
+    /* Иконка для правой панели (таск-лога) */
+    .sidebar-icon.right {
+        left: 0;
+        bottom: 40%;
+        border-radius: 5px 0 0 5px;
+    }
+
+    /* Появление текста при наведении */
+    .sidebar-icon span {
+        display: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 100%;
+        margin-left: 10px;
+        font-size: 14px;
+        background-color: #d3d3d3;
+        padding: 5px;
+        border-radius: 3px;
+    }
+
+    .sidebar-icon:hover span {
+        display: block;
+    }
+    .sidebar ul {
+        padding-left: 10px; /* Уменьшаем отступ слева */
+    }
+    /* Стили для списка участников */
+    .member-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 15px;
+        padding: 8px;
+        padding-left: 2px;
+
+        border-bottom: 1px solid #ddd;
     }
-}
+
+    .member-item strong {
+        font-size: 14px; /* Уменьшаем размер шрифта для имен */
+        font-weight: 600;
+        text-align: left; /* Выравнивание имени по левому краю */
+        flex-grow: 1; /* Чтобы имя занимало все доступное пространство */
+        white-space: nowrap; /* Ожидаем, что имя не будет переноситься */
+        overflow: hidden;
+        text-overflow: ellipsis; /* Обрезаем слишком длинные имена с многоточием */
+        margin-right: 10px; /* Немного увеличиваем отступ между именем и статусом */
+    }
+
+    .status {
+        font-size: 12px; /* Уменьшаем размер шрифта для статуса */
+        color: #777;
+        margin-left: 2px;
+    }
+
+    /* Кнопки для удаления и выхода */
+    .btn-sm {
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .btn-danger {
+        background-color: #e74c3c;
+        border-color: #e74c3c;
+    }
+
+    .btn-danger:hover {
+        background-color: #c0392b;
+        border-color: #c0392b;
+    }
+
+    .btn-warning {
+        background-color: #f39c12;
+        border-color: #f39c12;
+    }
+
+    .btn-warning:hover {
+        background-color: #e67e22;
+        border-color: #e67e22;
+    }
+
+    /* Кнопки внутри боковых панелей */
+    .sidebar-button {
+        background-color: #5dade2;
+        border: none;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .sidebar-button:hover {
+        background-color: #4a90d9;
+    }
+
+    /* Адаптивный дизайн */
+    @media (max-width: 768px) {
+        .board {
+            flex-direction: column;
+        }
+
+        .column {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+    }
 {% endblock head_style_sidebars %}
 
 {% block members_sidebar %}
-<!-- Боковая панель для участников -->
 <div class="sidebar" id="members_sidebar">
     <h3>Описание проекта</h3>
-    <p>Краткое описание проекта...</p>
+    <p>{{ project.description }}</p>
+
     <h3>Участники</h3>
     <ul>
-        <li>Участник 1</li>
-        <li>Участник 2</li>
+        {% for member in project_users %}
+        <li class="member-item">
+            <strong>{{ member.user.username }}</strong>
+            <span class="status">({{ member.status }})</span>
+
+            <!-- Кнопка "Удалить участника", если не текущий пользователь -->
+            {% if member.user != request.user %}
+                {% if request.user == project.created_by %}
+                    <form method="POST" action="{% url 'remove_user_from_project' project.id member.user.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+
+            <!-- Кнопка "Выйти из проекта", только для текущего пользователя, если он не создатель -->
+            {% if member.user == request.user and member.status != 'creator' %}
+                <form method="POST" action="{% url 'leave_project' project.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning btn-sm">Выйти</button>
+                </form>
+            {% endif %}
+        </li>
+        {% empty %}
+        <li>Участники отсутствуют.</li>
+        {% endfor %}
     </ul>
-    <button class="sidebar-button" aria-label="Добавить участника">Добавить участника</button>
+
+    <!-- Кнопка для добавления участника -->
+    <button class="sidebar-button" aria-label="Добавить участника" onclick="showAddUserModal()">Добавить участника</button>
 </div>
 
 <!-- Иконка для показа/скрытия боковой панели участников -->
@@ -117,12 +201,22 @@
 <!-- Боковая панель для таск-лога -->
 <div class="sidebar right" id="tasklog_sidebar">
     <h3>Таск-лог</h3>
-    <ul>
-        <li>Добавлена задача 1</li>
-        <li>Изменён статус задачи 2</li>
+    <ul class="task-log-list">
+        {% for log in task_logs %}
+        <li class="task-log-item">
+            <div class="task-log-header">
+                <strong class="task-log-title">{{ log.task.title }}</strong>
+                <span class="task-log-date">{{ log.created_at|date:"d.m.Y H:i" }}</span>
+            </div>
+            <p class="task-log-message">{{ log.message }}</p>
+        </li>
+        {% empty %}
+        <li class="task-log-empty">Логи задач отсутствуют.</li>
+        {% endfor %}
     </ul>
-    <button class="sidebar-button" aria-label="Добавить лог">Добавить лог</button>
+    <button class="sidebar-button" aria-label="Обновить логи">Обновить логи</button>
 </div>
+
 
 <!-- Иконка для показа/скрытия боковой панели таск-лога -->
 <div class="sidebar-icon right" onclick="toggleSidebar('tasklog_sidebar')">
@@ -159,6 +253,40 @@
             span.textContent = id === 'leftSidebar' ? "Показать участников" : "Показать таск-лог";
             icon.classList.replace('fa-times', id === 'leftSidebar' ? 'fa-users' : 'fa-list');
         }
+    }
+        document.querySelector('.sidebar-button').addEventListener('click', function () {
+        const projectId = {{ project.id }}; // Получаем ID проекта из контекста
+
+        fetch(`/projects/${projectId}/tasklogs/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки таск-логов');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const logsContainer = document.querySelector('#tasklog_sidebar ul');
+                logsContainer.innerHTML = ''; // Очищаем старый контент
+
+                if (data.task_logs.length === 0) {
+                    logsContainer.innerHTML = '<li>Логи задач отсутствуют.</li>';
+                } else {
+                    data.task_logs.forEach(log => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `<strong>${log.timestamp}</strong>: ${log.description}`;
+                        logsContainer.appendChild(listItem);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+    });
+        function showAddUserModal() {
+        // Открытие модального окна или перенаправление
+        const projectId = {{ project.id }};
+        const url = `/projects/${projectId}/members/add/`;
+        window.location.href = url; // Перенаправление на страницу добавления участника
     }
 </script>
 {% endblock script_for_sidebars %}

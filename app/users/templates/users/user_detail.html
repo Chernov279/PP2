@@ -62,19 +62,6 @@
 {% endblock projects %}
 
 {% block active %}
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Добавить Новый Проект</h5>
-        <form method="POST" action="/add_project/">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="projectName">Название проекта</label>
-                <input type="text" class="form-control" id="projectName" name="project_name" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Добавить проект</button>
-        </form>
-    </div>
-</div>
 
 <!-- Кнопки "Выйти из аккаунта" и "Удалить аккаунт" -->
 <div class="d-flex justify-content-between mt-4">
@@ -84,7 +71,7 @@
             <i class="fas fa-sign-out-alt"></i> Выйти из аккаунта
         </button>
     </form>
-    <a href="{% url 'user_delete' user.pk %}">
+    <a href="{% url 'user_delete' user.slug %}">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger btn-lg">
             Удалить аккаунт

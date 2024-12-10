@@ -114,29 +114,30 @@
             </select>
         </div>
 
-        <!-- Список задач -->
-        <div class="tasks-container">
-            <h3>Редактировать задачи</h3>
-            {% for task in column.tasks.all %}
-            <div class="task-item">
-                <input
-                    type="text"
-                    name="tasks[{{ task.id }}]"
-                    value="{{ task.title }}"
-                    placeholder="Название задачи">
-                <button
-                    type="button"
-                    class="delete-task-btn"
-                    onclick="removeTaskField(this, '{{ task.id }}')">Удалить</button>
-            </div>
-            {% endfor %}
-
-            <!-- Добавление новой задачи -->
-            <div class="task-item">
-                <input type="text" name="tasks[new][]" placeholder="Добавить новую задачу">
-                <button type="button" class="add-task-btn" onclick="addTaskField()">+</button>
-            </div>
-        </div>
+        <!-- Список задач --><div class="tasks-container">
+    <h3>Редактировать задачи</h3>
+    {% for task in column.tasks.all %}
+    <div class="task-item">
+        <input
+            type="text"
+            name="tasks[{{ task.id }}]"
+            value="{{ task.title }}"
+            placeholder="Название задачи">
+        <textarea
+            name="tasks_description[{{ task.id }}]"
+            rows="2"
+            placeholder="Описание задачи">{{ task.description }}</textarea>
+        <button
+            type="button"
+            class="delete-task-btn"
+            onclick="removeTaskField(this, '{{ task.id }}')">Удалить</button>
+    </div>
+    {% endfor %}
+        <!-- Кнопка для добавления новой задачи -->
+    <div class="add-task-container">
+        <button type="button" class="add-task-btn" onclick="addTaskField()">Добавить новую задачу</button>
+    </div>
+</div>
 
         <button type="submit" class="submit-btn">Сохранить изменения</button>
     </form>
@@ -182,6 +183,7 @@ function addTaskField() {
     taskItem.classList.add('task-item');
     taskItem.innerHTML = `
         <input type="text" name="tasks[new][]" placeholder="Добавить новую задачу">
+        <textarea name="tasks_description[new][]" placeholder="Добавить описание задачи" rows="2"></textarea>
         <button type="button" class="delete-task-btn" onclick="removeTaskField(this)">-</button>
     `;
     tasksContainer.appendChild(taskItem);
