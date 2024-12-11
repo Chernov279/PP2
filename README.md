@@ -54,7 +54,7 @@
 
 После сборки контейнеров необходимо применить миграции для правильной настройки базы данных. Выполните команду:
    ```bash
-docker-compose exec web python manage.py migrate
+docker-compose exec web python app/manage.py migrate
    ```
 Эта команда применяет все миграции, обновляя схему базы данных.
 
